@@ -15,10 +15,17 @@ namespace Todo.Controllers
         }
 
         [HttpGet]
-        [Route("/todos")]
+        [Route("/")]
         public List<TodoModel> Get()
         {
             return AppDbContext.Todos.ToList();
+        }
+
+        [HttpGet]
+        [Route("/{id}")]
+        public TodoModel GetById([FromRoute] int id)
+        {
+            return AppDbContext.Todos.FirstOrDefault(x => x.Id.Equals(id));
         }
 
         [HttpPost]

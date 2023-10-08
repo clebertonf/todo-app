@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Todo.Data;
 using Todo.Models;
 
@@ -36,6 +37,35 @@ namespace Todo.Controllers
             AppDbContext.SaveChanges();
 
             return todoModel;
+        }
+
+        [HttpPut]
+        [Route("/update-todo/{id}")]
+        public TodoModel Put([FromBody] TodoModel todoModel, [FromRoute] int id)
+        {
+           var model = AppDbContext.Todos.FirstOrDefault(x => x.Id.Equals(id));
+            if (model == null) return todoModel;
+
+            model.Title = todoModel.Title;
+            model.Done = todoModel.Done;
+
+            AppDbContext.Todos.Update(model);
+            AppDbContext.SaveChanges();
+
+            return todoModel;
+        }
+
+        [HttpDelete]
+        [Route("/delete/{id}")]
+        public TodoModel Delete([FromRoute] int id)
+        {
+            var model = AppDbContext.Todos.FirstOrDefault(x => x.Id.Equals(id));
+            if (model == null) return null;
+
+            AppDbContext.Todos.Remove(model);
+            AppDbContext.SaveChanges();
+
+            return model;
         }
     }
 }

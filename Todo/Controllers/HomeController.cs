@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Todo.Data;
+using Todo.Models;
 
 namespace Todo.Controllers
 {
@@ -6,11 +8,27 @@ namespace Todo.Controllers
     [ApiController]
     public class HomeController : ControllerBase
     {
-        [HttpGet]
-        [Route("/teste")]
-        public string Get()
+        private AppDbContext AppDbContext { get; set; }
+        public HomeController([FromServices] AppDbContext DbContext)
         {
-            return "Hello Word!";
+            AppDbContext = DbContext;
+        }
+
+        [HttpGet]
+        [Route("/todos")]
+        public List<TodoModel> Get()
+        {
+            return AppDbContext.Todos.ToList();
+        }
+
+        [HttpPost]
+        [Route("/create-todo")]
+        public TodoModel Post([FromBody] TodoModel todoModel)
+        {
+            AppDbContext.Todos.Add(todoModel);
+            AppDbContext.SaveChanges();
+
+            return todoModel;
         }
     }
 }

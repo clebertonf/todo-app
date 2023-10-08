@@ -17,34 +17,35 @@ namespace Todo.Controllers
 
         [HttpGet]
         [Route("/")]
-        public List<TodoModel> Get()
-        {
-            return AppDbContext.Todos.ToList();
-        }
+        public IActionResult Get() 
+            => Ok(AppDbContext.Todos.ToList());
 
         [HttpGet]
         [Route("/{id}")]
-        public TodoModel GetById([FromRoute] int id)
+        public IActionResult GetById([FromRoute] int id)
         {
-            return AppDbContext.Todos.FirstOrDefault(x => x.Id.Equals(id));
+            var todo = AppDbContext.Todos.FirstOrDefault(x => x.Id.Equals(id));
+            if (todo is null) return BadRequest();
+
+            return Ok(todo);
         }
 
         [HttpPost]
         [Route("/create-todo")]
-        public TodoModel Post([FromBody] TodoModel todoModel)
+        public IActionResult Post([FromBody] TodoModel todoModel)
         {
             AppDbContext.Todos.Add(todoModel);
             AppDbContext.SaveChanges();
 
-            return todoModel;
+            return Created($"/{todoModel.Id}", todoModel);
         }
 
         [HttpPut]
         [Route("/update-todo/{id}")]
-        public TodoModel Put([FromBody] TodoModel todoModel, [FromRoute] int id)
+        public IActionResult Put([FromBody] TodoModel todoModel, [FromRoute] int id)
         {
            var model = AppDbContext.Todos.FirstOrDefault(x => x.Id.Equals(id));
-            if (model == null) return todoModel;
+            if (model == null) return NotFound();
 
             model.Title = todoModel.Title;
             model.Done = todoModel.Done;
@@ -52,20 +53,20 @@ namespace Todo.Controllers
             AppDbContext.Todos.Update(model);
             AppDbContext.SaveChanges();
 
-            return todoModel;
+            return Ok(todoModel);
         }
 
         [HttpDelete]
         [Route("/delete/{id}")]
-        public TodoModel Delete([FromRoute] int id)
+        public IActionResult Delete([FromRoute] int id)
         {
             var model = AppDbContext.Todos.FirstOrDefault(x => x.Id.Equals(id));
-            if (model == null) return null;
+            if (model == null) return NotFound();
 
             AppDbContext.Todos.Remove(model);
             AppDbContext.SaveChanges();
 
-            return model;
+            return Ok(model);
         }
     }
 }

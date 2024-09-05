@@ -1,6 +1,6 @@
 # todo-app
 
-Basic todo App.
+Every basic app with basic concepts.
 
 - EF Core
 - Models

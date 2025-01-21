@@ -11,8 +11,8 @@ using Todo.Data;
 namespace Todo.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20231007181108_CreateDatabase")]
-    partial class CreateDatabase
+    [Migration("20250121004954_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -27,13 +27,14 @@ namespace Todo.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<DateTime>("CreateAt")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("Date");
 
-                    b.Property<bool>("Done")
+                    b.Property<bool>("IsDone")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("Title")
+                    b.Property<string>("TodoTitle")
                         .IsRequired()
+                        .HasMaxLength(30)
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");

@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using Todo.Data;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -6,7 +7,11 @@ var builder = WebApplication.CreateBuilder(args);
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 
 builder.Services.AddControllers();
-builder.Services.AddDbContext<AppDbContext>();
+
+builder.Services.AddDbContext<AppDbContext>(o =>
+{
+    o.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"));
+});
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

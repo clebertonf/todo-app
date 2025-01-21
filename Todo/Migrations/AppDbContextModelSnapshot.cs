@@ -24,13 +24,14 @@ namespace Todo.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<DateTime>("CreateAt")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("Date");
 
-                    b.Property<bool>("Done")
+                    b.Property<bool>("IsDone")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("Title")
+                    b.Property<string>("TodoTitle")
                         .IsRequired()
+                        .HasMaxLength(30)
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");

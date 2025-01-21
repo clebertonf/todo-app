@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Todo.Migrations
 {
     /// <inheritdoc />
-    public partial class CreateDatabase : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -17,9 +17,9 @@ namespace Todo.Migrations
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Title = table.Column<string>(type: "TEXT", nullable: false),
-                    Done = table.Column<bool>(type: "INTEGER", nullable: false),
-                    CreateAt = table.Column<DateTime>(type: "TEXT", nullable: false)
+                    TodoTitle = table.Column<string>(type: "TEXT", maxLength: 30, nullable: false),
+                    IsDone = table.Column<bool>(type: "INTEGER", nullable: false),
+                    CreateAt = table.Column<DateTime>(type: "Date", nullable: false)
                 },
                 constraints: table =>
                 {
